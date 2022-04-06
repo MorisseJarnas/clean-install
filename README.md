@@ -22,7 +22,9 @@ It contains the following package :
 You need to have `make`.
 
 ## Installation
-### All package
+First, you need to copy `.env.dist` in `.env`. Modify it.
+
+Install all package:
 ```console
 $ make install_all
 ```

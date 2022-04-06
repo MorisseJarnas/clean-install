@@ -9,6 +9,7 @@ upgrade:
 	sudo apt upgrade -y
 install_needed:
 	sudo apt install -y \
+		wget \
 		git \
 		ssh \
 		vim \
@@ -51,7 +52,13 @@ install_nodejs:
 	sudo apt update -y
 	sudo apt install -y nodejs npm
 	sudo npm install --global yarn
+install_vscode:
+	sudo apt update -y
+	sudo apt install -y software-properties-common apt-transport-https
+	sudo wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo apt-key add -
+	sudo add-apt-repository "deb [arch=${ARCH}] https://packages.microsoft.com/repos/vscode stable main"
+	sudo apt install -y code
 git_config:
 	git config --global --replace-all user.name "${INSTALL_GIT_FIRSTNAME}" 
 	git config --global --replace-all user.email ${INSTALL_GIT_EMAIL}
-install_all: update upgrade install_needed git_config install_phpstorm install_spotify install_docker install_enpass install_insomnia install_nodejs
+install_all: update upgrade install_needed git_config install_phpstorm install_spotify install_docker install_enpass install_insomnia install_nodejs install_vscode
