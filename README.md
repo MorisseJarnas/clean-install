@@ -1,5 +1,5 @@
 # Clean Install
-This script help you ton install all software/package necessary for web development.
+This script help you ton install all necessary software/package for web development.
 
 It contains the following package :
 - git
@@ -17,6 +17,7 @@ It contains the following package :
 - nodejs
 - npm
 - yarn
+- vs code
 
 ## Requirements:
 You need to have `make`.
