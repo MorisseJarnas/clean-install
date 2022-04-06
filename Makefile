@@ -1,0 +1,46 @@
+ifneq (,$(wildcard ./.env))
+    include .env
+    export
+endif
+
+update:
+	sudo apt update -y
+upgrade:
+	sudo apt upgrade -y
+install_needed:
+	sudo apt install -y \
+		git \
+		ssh \
+		vim \
+		zsh \
+		terminator \
+		chromium-browser \
+		mumble
+install_spotify:
+	curl -sS https://download.spotify.com/debian/pubkey_5E3C45D7B312C643.gpg | sudo apt-key add -
+	echo "deb http://repository.spotify.com stable non-free" | sudo tee /etc/apt/sources.list.d/spotify.list
+	sudo apt-get update -y && sudo apt-get install -y spotify-client
+install_phpstorm:
+	mkdir -p ./download/phpstorm
+	wget -O ./download/phpstorm.tar.gz https://download.jetbrains.com/webide/PhpStorm-2021.3.3.tar.gz 
+	sudo tar -xzf ./download/phpstorm.tar.gz -C /opt
+	sudo rm ./download/phpstorm.tar.gz
+install_docker:
+	sudo apt update -y
+	sudo apt install -y \
+		ca-certificates \
+		curl \
+		gnupg \
+		lsb-release
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+	echo "deb [arch=${ARCH} signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu ${UBUNTU_VERSION} stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+	sudo apt update -y
+	sudo apt install -y docker-ce docker-ce-cli containerd.io
+	sudo groupadd docker
+	sudo usermod -aG docker $USER
+	newgrp docker 
+git-config:
+	git config --global --replace-all user.name "${INSTALL_GIT_FIRSTNAME}" 
+	git config --global --replace-all user.email ${INSTALL_GIT_EMAIL}
+test:
+	echo 'coucou'
