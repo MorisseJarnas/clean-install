@@ -36,11 +36,22 @@ install_docker:
 	echo "deb [arch=${ARCH} signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu ${UBUNTU_VERSION} stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 	sudo apt update -y
 	sudo apt install -y docker-ce docker-ce-cli containerd.io
-	sudo groupadd docker
-	sudo usermod -aG docker $USER
-	newgrp docker 
-git-config:
+	sudo groupadd -f docker
+	sudo usermod -aG docker $(USER)
+install_enpass:
+	sudo echo "deb https://apt.enpass.io/ stable main" | sudo tee -a /etc/apt/sources.list.d/enpass.list
+	sudo wget -O - https://apt.enpass.io/keys/enpass-linux.key | sudo tee /etc/apt/trusted.gpg.d/enpass.asc
+	sudo apt update -y
+	sudo apt install -y enpass
+install_insomnia:
+	echo "deb [trusted=yes arch=${ARCH}] https://download.konghq.com/insomnia-ubuntu/ default all" | sudo tee -a /etc/apt/sources.list.d/insomnia.list
+	sudo apt update -y
+	sudo apt install -y insomnia
+install_nodejs:
+	sudo apt update -y
+	sudo apt install -y nodejs npm
+	sudo npm install --global yarn
+git_config:
 	git config --global --replace-all user.name "${INSTALL_GIT_FIRSTNAME}" 
 	git config --global --replace-all user.email ${INSTALL_GIT_EMAIL}
-test:
-	echo 'coucou'
+install_all: update upgrade install_needed git_config install_phpstorm install_spotify install_docker install_enpass install_insomnia install_nodejs
